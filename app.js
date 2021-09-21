@@ -13,6 +13,14 @@ app.use(express.urlencoded({ extended: false }));
 
 //create
 app.post('/insert', (request, response) => {
+    // console.log(request.body);
+    const { name } = request.body;
+
+    const db = dbService.getDbServiceInstance();
+    const result = db.insertNewName(name);
+    result
+        .then(data => response.json({ success: true }))
+        .catch(err => console.log(err));
 
 });
 
@@ -21,10 +29,10 @@ app.post('/insert', (request, response) => {
 app.get('/getAll', (request, response) => {
     const db = dbService.getDbServiceInstance();
 
+    const result = db.getAllData();
 
-    response.json({
-        success: true
-    });
+    result.then(data => response.json({ data: data }))
+        .catch(err => console.log(err));
 });
 
 
