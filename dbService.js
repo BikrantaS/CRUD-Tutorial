@@ -50,8 +50,12 @@ class DbService {
                     resolve(result.insertId);
                 })
             });
-            console.log(insertId);
-            // return response;
+            // console.log(insertId);
+            return {
+                id: insertId,
+                name: name,
+                dateAdded: dateAdded
+            };
         } catch (error) {
             console.log(error);
         }
