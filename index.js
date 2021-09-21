@@ -26,16 +26,21 @@ function insertRowIntoTable(data) {
     const table = document.querySelector('table tbody');
     const isTableData = table.querySelector('.no-data');
 
-    let tableHtml = "<tr>";
-    data.forEach(function ({ id, name, dateAdded }) {
-        tableHtml += `<td>${id}</td>`;
-        tableHtml += `<td>${name}</td>`;
-        tableHtml += `<td>${new Date(dateAdded).toLocaleDateString()}</td>`;
-        tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
-        tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
-    });
 
-    tableHtml += "</tr>";
+
+    let tableHtml = "</tr>";
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            if (key === 'dateAdded') {
+                data[key] = new Date(data[key]).toLocaleDateString();
+            }
+            tableHtml += `<td>${data[key]}</td>`;
+
+        }
+    }
+
+    tableHtml += `<td><button class="delete-row-btn" data-id=${data.id}>Delete</td>`;
+    tableHtml += `<td><button class="edit-row-btn" data-id=${data.id}>Edit</td>`;
 
     if (isTableData) {
         table.innerHTML = tableHtml;
