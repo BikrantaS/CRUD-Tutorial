@@ -12,7 +12,24 @@ document.querySelector('table tbody').addEventListener
         if (event.target.className === 'delete-row-btn') {
             deleteRowById(event.target.dataset.id);
         }
+
+        if (event.target.className === 'edit-row-btn') {
+            handleEditRow(event.target.dataset.id);
+        }
     })
+
+const updateBtn = document.querySelector("#update-row-btn");
+const searchBtn = document.querySelector("#search-btn");
+
+searchBtn.onclick = function () {
+    const searchValue = document.querySelector("#search-input").value;
+
+    fetch('http://localhost:5000/search/' + searchValue)
+        .then(response => response.json())
+        .then(data => loadHTMLTable(data['data']));
+
+}
+
 
 function deleteRowById(id) {
     fetch('http://localhost:5000/delete/' + id, {
@@ -22,10 +39,44 @@ function deleteRowById(id) {
         // .then(data => console.log(data));
         .then(data => {
             if (data.success) {
-                location.reload();//The location.reload() method reloads the current URL, like the Refresh button.
+                location.reload();
+                //The location.reload() method reloads the current URL, like the Refresh button.
             }
         });
 }
+
+function handleEditRow(id) {
+    const updateSection = document.querySelector('#update-row');
+    updateSection.hidden = false;
+    document.querySelector("#update-row-btn").dataset.id = id;
+}
+
+updateBtn.onclick = function () {
+    const updateNameInput = document.querySelector('#update-name-input');
+    fetch('http://localhost:5000/update',
+        {
+            method: 'PATCH',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: updateNameInput.dataset.id,
+                name: updateNameInput.value
+            })
+
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+                console.log("Done")
+            }
+
+        });
+
+}
+
+
 
 const addBtn = document.querySelector('#add-name-btn');
 
