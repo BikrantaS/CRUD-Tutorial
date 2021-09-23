@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const dbService = require('./dbService');
+const { request, response } = require('express');
 
 app.use(cors());
 app.use(express.json());
@@ -42,6 +43,17 @@ app.get('/getAll', (request, response) => {
 
 
 //delete
+app.delete('/delete/:id', (request, response) => {
+    // console.log(request.params);
+    const { id } = request.params;
+    const db = dbService.getDbServiceInstance();
+
+    const result = db.deleteRowById(id);
+    result.then(data => response.json({ success: data }))
+        .catch(err => console.log(err));
+
+
+})
 
 
 

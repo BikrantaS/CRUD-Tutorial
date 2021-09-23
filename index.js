@@ -1,3 +1,4 @@
+// const { response } = require("express");
 
 document.addEventListener('DOMContentLoaded', function () {
     fetch('http://localhost:5000/getAll')
@@ -6,7 +7,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+document.querySelector('table tbody').addEventListener
+    ('click', function (event) {
+        if (event.target.className === 'delete-row-btn') {
+            deleteRowById(event.target.dataset.id);
+        }
+    })
+
+function deleteRowById(id) {
+    fetch('http://localhost:5000/delete/' + id, {
+        method: "DELETE"
+    })
+        .then(response => response.json())
+        // .then(data => console.log(data));
+        .then(data => {
+            if (data.success) {
+                location.reload();//The location.reload() method reloads the current URL, like the Refresh button.
+            }
+        });
+}
+
 const addBtn = document.querySelector('#add-name-btn');
+
 addBtn.onclick = function () {
     const nameInput = document.querySelector('#name-input');
     const name = nameInput.value;
@@ -45,6 +67,7 @@ function insertRowIntoTable(data) {
     if (isTableData) {
         table.innerHTML = tableHtml;
     } else {
+        //The HTMLTableElement.insertRow() method inserts a new row (<tr>) in a given <table>, and returns a reference to the new row.
         const newRow = table.insertRow();
         newRow.innerHTML = tableHtml;
     }
@@ -70,4 +93,5 @@ function loadHTMLTable(data) {
     });
 
     table.innerHTML = tableHtml;
+    // console.log(tableHtml);
 }
