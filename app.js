@@ -53,7 +53,7 @@ app.patch('/update', (request, response) => {
     // console.log(request.params);
     const { id, name } = request.body;
     const db = dbService.getDbServiceInstance();
-
+    console.log("appjs patch:", request.body);
     const result = db.updateNameById(id, name);
     result.then(data => response.json({ success: data }))
         .catch(err => console.log(err));
